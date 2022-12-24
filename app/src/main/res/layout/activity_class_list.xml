@@ -24,7 +24,7 @@
         android:textStyle="bold|italic" />
 
     <Button
-        android:id="@+id/take_attendance"
+        android:id="@+id/AI_class_Btn"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="246dp"
         android:layout_height="68dp"
@@ -40,7 +40,7 @@
 
 
     <Button
-        android:id="@+id/view_record_btn"
+        android:id="@+id/C_class_btn"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="246dp"
         android:layout_height="68dp"
@@ -52,6 +52,21 @@
         android:layout_marginTop="230dp"
         android:layout_marginBottom="248dp"
         android:text="C"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/DS_Class_Btn"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="246dp"
+        android:layout_height="68dp"
+        android:background="@color/cardview_dark_background"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="310dp"
+        android:layout_marginBottom="248dp"
+        android:text="DS"
         android:textStyle="bold" />
 
 
