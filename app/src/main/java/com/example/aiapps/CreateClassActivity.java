@@ -19,6 +19,7 @@ public class CreateClassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_class);
+        this.setTitle("Creating Class");
         CreatClassButton=findViewById(R.id.class_create_btn);
         ClassCode=findViewById(R.id.class_code);
         NoOfStdnt=findViewById(R.id.NoOfStdnt);

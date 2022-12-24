@@ -16,6 +16,7 @@ public class ClassListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_list);
+        this.setTitle("Class List");
         AIButtn=findViewById(R.id.AI_class_Btn);
         AIButtn.setOnClickListener(new View.OnClickListener() {
             @Override
