@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.File;
 
 public class AudioInputActivity extends AppCompatActivity {
@@ -31,6 +34,14 @@ public class AudioInputActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_input);
         this.setTitle("Attendance");
+
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("user");
+
+        myRef.setValue("Sumon");
+
 
         audioImge=findViewById(R.id.audio_image);
         muteImage=findViewById(R.id.mute_image);
@@ -105,15 +116,16 @@ public class AudioInputActivity extends AppCompatActivity {
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             mediaRecorder.setOutputFile(getRecordingFilePath());
+            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             mediaRecorder.prepare();
-            mediaRecorder.start();
+
         }
         catch (Exception e)
         {
             e.printStackTrace();
 
         }
-
+        mediaRecorder.start();
 
     }
 
