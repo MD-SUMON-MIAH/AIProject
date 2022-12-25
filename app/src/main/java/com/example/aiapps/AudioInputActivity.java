@@ -29,16 +29,18 @@ public class AudioInputActivity extends AppCompatActivity {
     private  static int MicroPermission=200;
     MediaPlayer mediaPlayer;
     MediaRecorder mediaRecorder;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("user");
+
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_input);
         this.setTitle("Attendance");
 
-
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user");
 
         myRef.setValue("Sumon");
 
@@ -94,6 +96,7 @@ public class AudioInputActivity extends AppCompatActivity {
         try {
             mediaPlayer=new MediaPlayer();
             mediaPlayer.setDataSource(getRecordingFilePath());
+            myRef.setValue(getRecordingFilePath());
             mediaPlayer.prepare();
             mediaPlayer.start();
             Toast.makeText(getApplicationContext(),"Playing",Toast.LENGTH_SHORT).show();

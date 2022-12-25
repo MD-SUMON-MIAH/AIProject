@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         CreateBatchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,CreateBatchActivity.class);
+                Intent intent=new Intent(MainActivity.this,BatchListActivity.class);
                 startActivity(intent);
             }
         });
