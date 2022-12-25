@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private Toolbar mToolbar;
-    private Button TakeAttenceBtn,ViewRecordBtn,GeTVoicSampleBtn,CreatClassBtn;
+    private Button TakeAttenceBtn,ViewRecordBtn,GeTVoicSampleBtn,CreatClassBtn,CreateBatchBtn;
     private Button mSearchBtn;
     private ViewPager mViewPager;
    // private SectionPagerAddapter mSectionPagerAddapter;
@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         ViewRecordBtn=findViewById(R.id.view_record_btn);
         GeTVoicSampleBtn=findViewById(R.id.get_voice_sample);
         CreatClassBtn=findViewById(R.id.create_class);
+        CreateBatchBtn=findViewById(R.id.create_batch);
+
 
         CreatClassBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +53,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        CreateBatchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,CreateBatchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        GeTVoicSampleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,BatchListActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
