@@ -18,7 +18,7 @@
         android:layout_marginTop="200dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ctext"
+            android:id="@+id/create_batch_batch_code"
             android:layout_width="312dp"
             android:layout_height="wrap_content"
 
@@ -36,6 +36,7 @@
         android:layout_marginTop="300dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/create_batch_student_number"
             android:layout_width="314dp"
             android:layout_height="match_parent"
             android:hint="Number of Students"

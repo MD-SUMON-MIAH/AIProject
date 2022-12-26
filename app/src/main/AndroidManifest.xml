@@ -15,6 +15,13 @@
         android:theme="@style/Theme.AIApps"
         tools:targetApi="31">
         <activity
+            android:name=".StudentList"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".BatchListActivity"
             android:exported="false">
             <meta-data

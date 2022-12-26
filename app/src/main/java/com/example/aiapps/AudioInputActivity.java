@@ -1,14 +1,17 @@
 package com.example.aiapps;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -16,10 +19,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 
 public class AudioInputActivity extends AppCompatActivity {
 
@@ -33,6 +43,10 @@ public class AudioInputActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("user");
 
+    private StorageReference storageReference;
+    private ProgressDialog progressBar;
+    VoiceSampleDBHelper dbHelper;
+
 
     @Override
 
@@ -42,7 +56,9 @@ public class AudioInputActivity extends AppCompatActivity {
         this.setTitle("Attendance");
 
 
-        myRef.setValue("Sumon");
+        storageReference= FirebaseStorage.getInstance().getReference();
+        progressBar=new ProgressDialog(this);
+        dbHelper=new VoiceSampleDBHelper();
 
 
         audioImge=findViewById(R.id.audio_image);
@@ -60,7 +76,7 @@ public class AudioInputActivity extends AppCompatActivity {
                 BottomTextViewBegin.setVisibility(View.GONE);
                 BottomTextViewStop.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(),"Taking Audio Input",Toast.LENGTH_SHORT).show();
-            InputVoice();
+                InputVoice();
             }
 
         });
@@ -79,7 +95,7 @@ public class AudioInputActivity extends AppCompatActivity {
 
                 mediaRecorder.release();
                 mediaRecorder=null;
-                PlayAudio();
+                upload();
                 Toast.makeText(getApplicationContext(),"Sumon",Toast.LENGTH_SHORT).show();
             }
         });
@@ -90,6 +106,7 @@ public class AudioInputActivity extends AppCompatActivity {
 
 
     }
+
 
     private void PlayAudio() {
 
@@ -131,6 +148,42 @@ public class AudioInputActivity extends AppCompatActivity {
         mediaRecorder.start();
 
     }
+    public void upload() {
+        progressBar.setMessage("uplading..");
+        progressBar.show();
+        String url;
+        StorageReference filepath=storageReference.child("Samples").child(BatchListActivity.batch.getCode()+"_"+StudentList.roll+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date())+".mp3");
+        Uri uri=Uri.fromFile(new File(getRecordingFilePath()));
+        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(
+                        new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                String fileLink = task.getResult().toString();
+                                VoiceSample voiceSample=new VoiceSample(fileLink,BatchListActivity.batch.getCode(),StudentList.roll);
+                                try {
+                                    dbHelper.add(voiceSample).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            progressBar.dismiss();
+                                            Toast.makeText(AudioInputActivity.this, "Sample collected!", Toast.LENGTH_SHORT).show();
+                                            //play();
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+
+
+                            }
+                        });
+            }
+        });
+    }
 
     private boolean isMicrophonPresent() {
         if(this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE)){
@@ -152,4 +205,6 @@ public class AudioInputActivity extends AppCompatActivity {
         File file= new File(musicDirectory,"tesRecordingFile"+".mp3");
         return file.getPath();
     }
+
+
 }

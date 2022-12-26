@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,88 +18,57 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class BatchListActivity extends AppCompatActivity {
 
-    ArrayList<String>Batches;
-    Button CreatBatchButtn;
-    public List<StoreBatchList> BatchList;
-    TextInputLayout BatchText, NoofStndt;
-    int i=0;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("BatchList");
-    public ArrayList<String> ClassCode=new ArrayList<>();
+
+    BatchListAdapter adapter;
+    public static Batch batch;
+    DAOBatch dao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batch_list);
-        this.setTitle("Batch List");
+        RecyclerView recyclerView=findViewById(R.id.batch_listRV);
+        recyclerView.setHasFixedSize(true);
+        adapter=new BatchListAdapter(this);
+        recyclerView.setAdapter(adapter);
+        LinearLayoutManager manger=new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manger);
 
-        Batches =new ArrayList<>();
-        ClassCode.add("CSE-2018");
-        ClassCode.add("CSE-20177");
+        dao=new DAOBatch();
+        loadData();
 
-        CreatBatchButtn=findViewById(R.id.batch_create_btnEx);
-        BatchText=findViewById(R.id.batch_codeEx);
-        NoofStndt=findViewById(R.id.NoOfStdntEx);
+    }
+    public void changeActivity(){
+        //Intent intent=new Intent(RVActivity.this,ClassInfo.class);
+        //startActivity(intent);
+    }
+    public void loadData(){
 
-        CreatBatchButtn.setOnClickListener(new View.OnClickListener() {
+        try{dao.get().addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                String batch=BatchText.getEditText().getText().toString();
-                String NoOfstd=NoofStndt.getEditText().getText().toString();
-                 String key=myRef.push().getKey();
-                 StoreBatchList storbtch=new StoreBatchList(batch,NoOfstd);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Batch> batches=new ArrayList<>();
+                for(DataSnapshot data:snapshot.getChildren()){
+                    Batch batch=data.getValue(Batch.class);
+                    batches.add(batch);
+                }
 
-                myRef.child(key).setValue(storbtch);
+                adapter.setItem(batches);
+                adapter.notifyDataSetChanged();
+            }
 
-                BatchList =new ArrayList<>();
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        BatchList.clear();
-                       for(DataSnapshot dataSnapshot1: snapshot.getChildren()){
-                           //   StoreBatchList Data=dataSnapshot1.getValue(StoreBatchList.class);
-                        }
 
-                        Toast.makeText(getApplicationContext(),"Store and retrive",Toast.LENGTH_SHORT).show();
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-
-        AddView();
-
-
-        ClassCode.add("CSE-2014");
-        AddView();
-        Clik("ss","ff");
-
-    }
-
-    public void Clik(String ClassCodeText,String NoOfstudent){
-
-        ClassCode.add(ClassCodeText);
-        AddView();
-
-    }
-
-    public void AddView() {
-        RecyclerView RV=findViewById(R.id.RecycleView);
-        RV.setLayoutManager(new LinearLayoutManager(this));
-        MyAdapter adaptr=new MyAdapter(this,ClassCode);
-        RV.setAdapter(adaptr);
-        //adaptr.notifyDataSetChanged();
+        });}catch (Exception e){
+            Log.d("Heloo arnob", ""+e);
+        }
     }
 }
