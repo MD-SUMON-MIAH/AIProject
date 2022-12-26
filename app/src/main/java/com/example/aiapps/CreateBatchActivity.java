@@ -2,11 +2,7 @@ package com.example.aiapps;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +41,7 @@ public class CreateBatchActivity extends AppCompatActivity {
 
     }
     public void create(){
-        EditText batch_code=findViewById(R.id.create_batch_batch_code);
+        EditText batch_code=findViewById(R.id.batch_code);
         EditText number_of_students=findViewById(R.id.create_batch_student_number);
         String number_string=number_of_students.getText().toString();
         int number=0;

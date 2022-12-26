@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         CreatClassBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,CreateClassActivity.class);
+                Intent intent=new Intent(MainActivity.this,Create_course.class);
                 startActivity(intent);
             }
         });
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         TakeAttenceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,ClassListActivity.class);
+                Intent intent=new Intent(MainActivity.this,CourseList.class);
                 startActivity(intent);
             }
         });
