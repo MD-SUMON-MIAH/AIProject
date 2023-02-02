@@ -5,8 +5,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -90,14 +92,14 @@ public class Attendence extends AppCompatActivity {
                 muteImage.setVisibility(View.GONE);
                 BottomTextViewBegin.setVisibility(View.VISIBLE);
                 BottomTextViewStop.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),"Audio is taken",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Audio is taken",Toast.LENGTH_SHORT).show();
 
                 //mediaRecorder.stop();
 
                 mediaRecorder.release();
                 mediaRecorder=null;
                 upload();
-                Toast.makeText(getApplicationContext(),"Sumon",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Sumon",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -110,29 +112,13 @@ public class Attendence extends AppCompatActivity {
     }
 
     public void upload() {
-//        progressBar.setMessage("uplading..");
-//        progressBar.show();
+        progressBar.setMessage("verifying..");
+        progressBar.show();
+        //sendaudio to backend
+        String response="24";
+        ///after response
+        onResponse(response);
 
-        ///back end implementation...
-
-//        int roll=12;
-//        String batch="cse18";
-//        Date date = Calendar.getInstance().getTime();
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy_mm_dd");
-//        String strDate = dateFormat.format(date);
-//        Record record=new Record(CourseList.course.getCode(),batch,""+strDate,roll);
-//        try {
-//            dbHelper.add(record).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                @Override
-//                public void onSuccess(Void unused) {
-//                    progressBar.dismiss();
-//                    Toast.makeText(Attendence.this, "Uploaded!", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        Log.d("upload", "uploading... ");
     }
 
     public void btnPlayPressed(View view){
@@ -168,5 +154,45 @@ public class Attendence extends AppCompatActivity {
         File musicDirectory=contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
         File file= new File(musicDirectory,"testRecordingFile"+".mp3");
         return file.getPath();
+    }
+
+    public void onResponse(String rolls){
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setMessage("Is your roll: "+rolls).setCancelable(false).setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+                int roll=Integer.parseInt(rolls);
+                String batch="cse18";
+                Date date = Calendar.getInstance().getTime();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy_mm_dd");
+                String strDate = dateFormat.format(date);
+                Record record=new Record(CourseList.course.getCode(),batch,""+strDate,roll);
+                try {
+                    dbHelper.add(record).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            progressBar.dismiss();
+                            Toast.makeText(Attendence.this, "Attendence Recoreded!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+                progressBar.dismiss();
+                Toast.makeText(Attendence.this, "Try Again!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog alertDialog=builder.create();
+        alertDialog.show();
+        ///back end implementation...
+
+
+        Log.d("upload", "uploading... ");
     }
 }

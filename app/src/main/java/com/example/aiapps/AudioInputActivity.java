@@ -89,14 +89,14 @@ public class AudioInputActivity extends AppCompatActivity {
                 muteImage.setVisibility(View.GONE);
                 BottomTextViewBegin.setVisibility(View.VISIBLE);
                 BottomTextViewStop.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),"Audio is taken",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Audio is taken",Toast.LENGTH_SHORT).show();
 
                 //mediaRecorder.stop();
 
                 mediaRecorder.release();
                 mediaRecorder=null;
                 upload();
-                Toast.makeText(getApplicationContext(),"Sumon",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Sumon",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -149,7 +149,7 @@ public class AudioInputActivity extends AppCompatActivity {
 
     }
     public void upload() {
-        progressBar.setMessage("uplading..");
+        progressBar.setMessage("uploading..");
         progressBar.show();
         String url;
         StorageReference filepath=storageReference.child("Samples").child(BatchListActivity.batch.getCode()+"_"+StudentList.roll+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date())+".mp3");
