@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         GeTVoicSampleBtn=findViewById(R.id.get_voice_sample);
         CreatClassBtn=findViewById(R.id.create_class);
         CreateBatchBtn=findViewById(R.id.create_batch);
+        ViewRecordBtn=findViewById(R.id.view_record_btn);
 
 
         CreatClassBtn.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(MainActivity.this,BatchListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ViewRecordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,ViewRecords.class);
                 startActivity(intent);
             }
         });
