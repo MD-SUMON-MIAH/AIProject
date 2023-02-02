@@ -165,7 +165,7 @@ public class Attendence extends AppCompatActivity {
                 int roll=Integer.parseInt(rolls);
                 String batch="cse18";
                 Date date = Calendar.getInstance().getTime();
-                DateFormat dateFormat = new SimpleDateFormat("yyyy_mm_dd");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
                 String strDate = dateFormat.format(date);
                 Record record=new Record(CourseList.course.getCode(),batch,""+strDate,roll);
                 try {

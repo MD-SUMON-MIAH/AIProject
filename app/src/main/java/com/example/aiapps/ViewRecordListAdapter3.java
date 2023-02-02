@@ -24,7 +24,7 @@ public class ViewRecordListAdapter3 extends RecyclerView.Adapter<RecyclerView.Vi
     public  void setItem(ArrayList<Record> records){
         Set<String> rolls=new HashSet<String>();
         for(Record record : records){
-            if(record.getCourse_code()==ViewRecords.course&&record.getDate()==ViewRecords2.date)
+            if(record.getCourse_code().equals(ViewRecords.course)&&record.getDate().equals(ViewRecords2.date))
                 rolls.add(Integer.toString(record.getRoll()));
         }
 

@@ -2,6 +2,7 @@ package com.example.aiapps;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,10 @@ public class ViewRecorListAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
     public  void setItem(ArrayList<Record> records){
         Set<String> dates=new HashSet<String>();
         for(Record record : records){
-            if(record.getCourse_code()==ViewRecords.course)
+            if(record.getCourse_code().equals(ViewRecords.course))
                 dates.add(record.getDate());
         }
-
+        Log.d("Set", "dates: "+records.toString());
         this.dates.addAll(dates);
     }
 

@@ -44,8 +44,9 @@ public class ViewRecords extends AppCompatActivity {
                 for(DataSnapshot data:snapshot.getChildren()){
                     Record record=data.getValue(Record.class);
                     records.add(record);
-                }
 
+                }
+                Log.d("records", "RecordSize: "+records.toString());
                 adapter.setItem(records);
                 adapter.notifyDataSetChanged();
             }
